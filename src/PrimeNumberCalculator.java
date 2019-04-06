@@ -10,11 +10,14 @@ public class PrimeNumberCalculator {
 
         for (int primeCandidate = 2; primeCandidate < topNum; primeCandidate++) {
 
+            // get subset of prime numbers where largest is no larger than 1/3 of candidate
+
             boolean passesBasic = true;
 
             for (int j = 2; j < 10; j++) {
-                if (passesBasic && primeCandidate % j == 0 && primeCandidate != j) {
+                if (primeCandidate % j == 0 && primeCandidate != j) {
                     passesBasic = false;
+                    break;
                 }
             }
 
@@ -25,6 +28,7 @@ public class PrimeNumberCalculator {
                 for (Integer formerPrime : primeValues) {
                     if (primeCandidate % formerPrime == 0) {
                         passesComplex = false;
+                        break;
                     }
                 }
             }

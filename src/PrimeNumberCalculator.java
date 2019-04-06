@@ -1,16 +1,15 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class PrimeNumberCalculator {
 
     public static void main(String[] args) {
 
-        LinkedList<Integer> primeValues = new LinkedList<>();
+        ArrayList<Integer> primeValues = new ArrayList<>();
 
-        int topNum = 1000000;
+        int topNum = 100000;
 
         for (int primeCandidate = 2; primeCandidate < topNum; primeCandidate++) {
 
-            // get subset of prime numbers where largest is no larger than 1/3 of candidate
 
             boolean passesBasic = true;
 
@@ -25,8 +24,27 @@ public class PrimeNumberCalculator {
 
             if (passesBasic && primeValues.size() > 0) {
 
-                for (Integer formerPrime : primeValues) {
-                    if (primeCandidate % formerPrime == 0) {
+
+                // get subset of prime numbers where largest is no larger than 1/3 of candidate
+
+                int component = 3;
+                int length = primeValues.size();
+                int index = length / component;
+                int value = primeValues.get(index);
+                int c = primeCandidate / component;
+                if (value < c) {
+                    for (int i = length / component; i < length; i++) {
+                        int x = primeValues.get(i);
+                        if (x <= value) {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+
+
+                for (int i = 0; i <= index; i++) {
+                    if (primeCandidate % primeValues.get(i) == 0) {
                         passesComplex = false;
                         break;
                     }
@@ -34,8 +52,9 @@ public class PrimeNumberCalculator {
             }
 
             if (passesBasic && passesComplex) {
-                System.out.println(primeCandidate);
                 primeValues.add(new Integer(primeCandidate));
+                System.out.println(primeValues.size() + " --- " + primeCandidate);
+
             }
 
         }

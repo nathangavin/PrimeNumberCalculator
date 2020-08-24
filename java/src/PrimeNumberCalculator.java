@@ -6,7 +6,7 @@ public class PrimeNumberCalculator {
 
         ArrayList<Integer> primeValues = new ArrayList<>();
 
-        int topNum = 1000000;
+        int topNum = 100000;
 
         for (int primeCandidate = 2; primeCandidate < topNum; primeCandidate++) {
 
@@ -25,7 +25,7 @@ public class PrimeNumberCalculator {
             if (passesBasic && primeValues.size() > 0) {
 
 
-                // get subset of prime numbers where largest is no larger than 1/3 of candidate
+                // get subset of prime numbers where largest is no larger than 1/9 of candidate
 
                 int component = 9;
                 int length = primeValues.size();

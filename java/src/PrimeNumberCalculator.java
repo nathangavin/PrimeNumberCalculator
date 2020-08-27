@@ -7,7 +7,7 @@ public class PrimeNumberCalculator {
 
         ArrayList<Integer> primeValues = new ArrayList<>();
 
-        int topNum = 10000000;
+        int topNum = 100000;
 
         primeValues.add(2);
         primeValues.add(3);

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class PrimeNumberCalculator {
 
@@ -6,54 +7,48 @@ public class PrimeNumberCalculator {
 
         ArrayList<Integer> primeValues = new ArrayList<>();
 
-        int topNum = 100000;
+        int topNum = 10000000;
 
-        for (int primeCandidate = 2; primeCandidate < topNum; primeCandidate++) {
+        primeValues.add(2);
+        primeValues.add(3);
 
+        int candidate = 5;
 
-            boolean passesBasic = true;
-
-            for (int j = 2; j < 10; j++) {
-                if (primeCandidate % j == 0 && primeCandidate != j) {
-                    passesBasic = false;
-                    break;
-                }
+        while (candidate < topNum) {
+            if (isPrime(candidate, primeValues)) {
+                primeValues.add(candidate);
+                System.out.println(primeValues.size() + " --- " + candidate);
             }
 
-            boolean passesComplex = true;
+            candidate += 2;
 
-            if (passesBasic && primeValues.size() > 0) {
-
-
-                // get subset of prime numbers where largest is no larger than 1/9 of candidate
-
-                int component = 9;
-                int length = primeValues.size();
-                int index = length - 1;
-                int value = primeCandidate/component;
-
-                for (int i = 0; i < length; i++) {
-                    int x = primeValues.get(i);
-                    if (x > value) {
-                        index = i - 1;
-                        break;
-                    }
-                }
-
-                for (int i = 0; i <= index; i++) {
-                    if (primeCandidate % primeValues.get(i) == 0) {
-                        passesComplex = false;
-                        break;
-                    }
-                }
+            if (isPrime(candidate, primeValues)) {
+                primeValues.add(candidate);
+                System.out.println(primeValues.size() + " --- " + candidate);
             }
 
-            if (passesBasic && passesComplex) {
-                primeValues.add(new Integer(primeCandidate));
-                System.out.println(primeValues.size() + " --- " + primeCandidate);
-
-            }
-
+            candidate += 4;
         }
+
+    }
+
+    private static boolean isPrime(int candidate, ArrayList<Integer> primeValues) {
+        boolean isPrime = true;
+
+        double sqrt = Math.sqrt((double) candidate);
+
+        int length = primeValues.size();
+
+        for (int i = 0; i < length; i++) {
+            int val = primeValues.get(i);
+            if (val > sqrt) {
+                break;
+            } else if (candidate % val == 0 && candidate != val) {
+                isPrime = false;
+                break;
+            }
+        }
+
+        return isPrime;
     }
 }

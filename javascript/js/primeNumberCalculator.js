@@ -34,111 +34,45 @@ document.addEventListener('DOMContentLoaded', function() {
         row.innerHTML = string;
         let container = document.getElementById('number_container');
         container.innerHTML = '<h3>' + string + '</h3>'
-        // container.appendChild(row);
     }
 
-    function passesBasic(candidate, val) {
-        if (candidate % val === 0 && candidate !== i) {
-            return false;
-        } else if (val === 9) {
-            return true;
-        } else {
-            return passesBasic(candidate, val++);
-        }
-    }
-
-    function getComponentPrime(value, prevPrimes, position) {
-        if (position === prevPrimes.length - 1) {
-            return position;
-        } else if (prevPrimes[position] > value) {
-            let i = position - 1;
-            return i;
-        } else {
-            return getComponentPrime(value, prevPrimes, position++);
-        }
-    }
-
-    function compareCandidateWithPrime(candidate, prevPrimes, position, index) {
-        if (candidate % prevPrimes[position] === 0) {
-            return false;
-        } else if (index === position) {
-            return true;
-        } else {
-            return compareCandidateWithPrime(candidate, prevPrimes, position++, index);
-        }
-    }
-
-    function passesComplex(candidate, prevPrimes) {
-        let component = 9;
-        let length = prevPrimes.length;
-        let value = candidate/component;
-        let index = getComponentPrime(value, prevPrimes, 0);
-        return compareCandidateWithPrime(candidate, prevPrimes, 0, index);
-    }
-
-    function isPrime(candidate, prevPrimes) {
-        if (passesBasic(candidate, 0)) {
-            if (prevPrimes.length > 0) {
-                return passesComplex(candidate, prevPrimes);
-            } else {
-                return true;
+    function isPrime(candidate, primes) {
+        let isPrime = true;
+        let sqrt = Math.sqrt(candidate);
+        let length = primes.length;
+        for (let i = 0; i < length; i++) {
+            let val = primes[i];
+            if (val > sqrt) {
+                break;
+            } else if (candidate % val === 0 && candidate !== val) {
+                isPrime = false;
+                break;
             }
-        } else {
-            return false;
         }
-    }
 
-    function buildPrimes(candidate, maxValue, prevPrimes) {
-        prevPrimes = prevPrimes || [];
-        if (isPrime(candidate, prevPrimes)) {
-            prevPrimes.push(candidate);
-            printPrime(prevPrimes.length, candidate);
-        }
-        if (candidate === maxValue) {
-            return prevPrimes;
-        } else {
-            return buildPrimes(candidate++, maxValue, prevPrimes);
-        }
+        return isPrime;
     }
 
     function calculatePrimeNumbers(maxValue) {
-        // tail end recursion - but isnt currently supported by chrome v8 js engine so pretty pointless
-        // functional programming approach
-        // buildPrimes(2, maxValue, []);
 
         let primes = [2];
         printPrime(primes.length, 2);
-        for (let primeCandidate = 3; primeCandidate < maxValue; primeCandidate += 2) {
-            let passesBasic = true;
-            let passesComplex = true;
-            for (let i = 2; i < 10; i++) {
-                if (primeCandidate % i === 0 && primeCandidate !== i) {
-                    passesBasic = false;
-                    break;
-                }
+        primes.push(3);
+        printPrime(primes.length, 3);
+        
+        let candidate = 5;
+
+        while (candidate < maxValue) {
+            if (isPrime(candidate, primes)) {
+                primes.push(candidate);
+                printPrime(primes.length, candidate);
+            } 
+            candidate += 2;
+            if (isPrime(candidate, primes)) {
+                primes.push(candidate);
+                printPrime(primes.length, candidate);
             }
-            let length = primes.length;
-            if (passesBasic && length > 0) {
-                let component = 9;
-                let value = primeCandidate/component;
-                let index;
-                for (let i = 0; i < length; i++) {
-                    if (value < primes[i]) {
-                        index = i - 1;
-                        break;
-                    }
-                }
-                for (let i = 0; i <= index; i++) {
-                    if (primeCandidate % primes[i] === 0) {
-                        passesComplex = false;
-                        break;
-                    }
-                }
-            }
-            if (passesBasic && passesComplex) {
-                primes.push(primeCandidate);
-                printPrime(primes.length, primeCandidate);
-            }
+            candidate += 4;
         }
     }
 

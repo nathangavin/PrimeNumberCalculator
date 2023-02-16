@@ -18,7 +18,6 @@ fn main() {
     }
 }
 
-
 fn is_prime(candidate: u32, previous_primes: &Vec<u32>) -> bool {
     let mut is_prime = true;
     let sqrt = f32::floor(f32::sqrt(candidate as f32)) as u32;

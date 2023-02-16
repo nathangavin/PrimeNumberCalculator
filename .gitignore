@@ -8,3 +8,5 @@
 .externalNativeBuild
 /out/
 *.class
+/rust/target/
+/rust/Cargo.lock
